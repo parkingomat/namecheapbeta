@@ -4,7 +4,7 @@ header("content-type: text/plain;charset=utf8");
 
 
 $response = "";
-$additiona_parameters = "";
+$additional_parameters = "";
 
 
 $namecheap_url = "https://api.namecheap.com/xml.response?";   #Url it will remain same always
@@ -45,7 +45,7 @@ $Count = 1;
 $recordMatch = 0;
 
 if($_GET['DeleteAll']=="true") {
-$set_hosts_call .= $additiona_parameters;
+$set_hosts_call .= $additional_parameters;
 execute_rest_call($set_hosts_call);
 $xml=simplexml_load_string($response);
 print_r($xml);
@@ -66,7 +66,7 @@ foreach($xml->CommandResponse->DomainDNSGetHostsResult->children() as $host) {
             continue;
         }
         
-        $additiona_parameters .= "&HostName{$Count}={$_GET['SetHostName']}".
+        $additional_parameters .= "&HostName{$Count}={$_GET['SetHostName']}".
                                  "&RecordType{$Count}={$_GET['SetRecordType']}".
                                  "&Address{$Count}={$_GET['Address']}".
                                  "&TTL{$Count}={$_GET['TTL']}"; 
@@ -78,7 +78,7 @@ foreach($xml->CommandResponse->DomainDNSGetHostsResult->children() as $host) {
         continue;
       }  
              
-      $additiona_parameters .= "&HostName{$Count}={$host_name}".
+      $additional_parameters .= "&HostName{$Count}={$host_name}".
                                "&RecordType{$Count}={$record_type}".
                                "&Address{$Count}={$address}".
                                "&TTL{$Count}={$ttl}";                
@@ -89,13 +89,13 @@ foreach($xml->CommandResponse->DomainDNSGetHostsResult->children() as $host) {
 
 if ($recordMatch == 0 && $_GET['DeleteRecord']!="true") {        
   
-    $additiona_parameters .= "&HostName{$Count}={$_GET['SetHostName']}".
+    $additional_parameters .= "&HostName{$Count}={$_GET['SetHostName']}".
     "&RecordType{$Count}={$_GET['SetRecordType']}".
     "&Address{$Count}={$_GET['Address']}".
     "&TTL{$Count}={$_GET['TTL']}"; 
 }
 
-$set_hosts_call .= $additiona_parameters;
+$set_hosts_call .= $additional_parameters;
 echo $set_hosts_call;
 execute_rest_call($set_hosts_call);
 
